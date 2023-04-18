@@ -11,6 +11,12 @@ const {
 const network = require("../utils/network");
 
 const axios = require("axios");
+const {
+  PartnerType,
+  PermissionType,
+  TemplateType,
+} = require("../model/models");
+
 const BASE_URL = "https://stagev2a.rechargkit.biz";
 const findData = () => {
   return "calculation result";
@@ -83,68 +89,69 @@ const SpecialPlanType = new GraphQLObjectType({
   }),
 });
 
-const PartnerType = new GraphQLObjectType({
-  name: "Partner",
-  fields: () => ({
-    member_id: { type: GraphQLID },
-    member_no: { type: GraphQLString },
-    member_password: { type: GraphQLString },
-    member_business_type: { type: GraphQLString },
-    member_ip_address: { type: new GraphQLList(GraphQLString) },
-    member_callback_url: { type: GraphQLString },
-    memberdmr_callback_url: { type: GraphQLString },
-    member_domain: { type: GraphQLString },
-    member_domain_code: { type: GraphQLString },
-    irctc_retailer_counter: { type: GraphQLInt },
-    member_api_type: { type: GraphQLInt },
-    member_api_token: { type: GraphQLString },
-    member_type: { type: GraphQLInt },
-    member_firm_name: { type: GraphQLString },
-    member_firm_address: { type: GraphQLString },
-    member_contact_name: { type: GraphQLString },
-    member_mobile: { type: GraphQLString },
-    member_email: { type: GraphQLString },
-    member_service_emails: { type: GraphQLString },
-    member_alt_mobile: { type: GraphQLString },
-    member_state: { type: GraphQLString },
-    member_city: { type: GraphQLString },
-    member_pin: { type: GraphQLString },
-    member_role: { type: GraphQLString },
-    member_kyc: { type: GraphQLString },
-    member_photo: { type: GraphQLString },
-    member_wallet: { type: GraphQLString },
-    member_min_wallet_balance: { type: GraphQLInt },
-    member_dmr_wallet: { type: GraphQLInt },
-    member_min_dmr_wallet_balance: { type: GraphQLInt },
-    member_service_profile: { type: GraphQLInt },
-    member_daily_recharge_report: { type: GraphQLInt },
-    member_active: { type: GraphQLInt },
-    member_created_date: { type: GraphQLString },
-    member_created_by: { type: GraphQLInt },
-    member_update_date: { type: GraphQLString },
-    member_update_by: { type: GraphQLInt },
-    member_alert_wallet_balance: { type: GraphQLInt },
-    member_alert_dmr_wallet_balance: { type: GraphQLInt },
-    package_refund_callback_url: { type: GraphQLString },
-    member_irctc_authcheck: { type: GraphQLString },
-    member_irctc_ordercheck: { type: GraphQLString },
-    member_irctc_cancelorder: { type: GraphQLString },
-    is_lapu_acess: { type: GraphQLInt },
-    provider_strategy: { type: GraphQLInt },
-    is_special_recharge: { type: GraphQLInt },
-    last_login: { type: GraphQLString },
-    member_permission: { type: new GraphQLList(GraphQLString) },
-    is_phone_verified: { type: GraphQLInt },
-    commission_template_id: { type: GraphQLInt },
-    member_direct: { type: GraphQLString },
-    last_ip_address: { type: GraphQLString },
-  }),
-});
+// const PartnerType = new GraphQLObjectType({
+//   name: "Partner",
+//   fields: () => ({
+//     member_id: { type: GraphQLID },
+//     member_no: { type: GraphQLString },
+//     member_password: { type: GraphQLString },
+//     member_business_type: { type: GraphQLString },
+//     member_ip_address: { type: new GraphQLList(GraphQLString) },
+//     member_callback_url: { type: GraphQLString },
+//     memberdmr_callback_url: { type: GraphQLString },
+//     member_domain: { type: GraphQLString },
+//     member_domain_code: { type: GraphQLString },
+//     irctc_retailer_counter: { type: GraphQLInt },
+//     member_api_type: { type: GraphQLInt },
+//     member_api_token: { type: GraphQLString },
+//     member_type: { type: GraphQLInt },
+//     member_firm_name: { type: GraphQLString },
+//     member_firm_address: { type: GraphQLString },
+//     member_contact_name: { type: GraphQLString },
+//     member_mobile: { type: GraphQLString },
+//     member_email: { type: GraphQLString },
+//     member_service_emails: { type: GraphQLString },
+//     member_alt_mobile: { type: GraphQLString },
+//     member_state: { type: GraphQLString },
+//     member_city: { type: GraphQLString },
+//     member_pin: { type: GraphQLString },
+//     member_role: { type: GraphQLString },
+//     member_kyc: { type: GraphQLString },
+//     member_photo: { type: GraphQLString },
+//     member_wallet: { type: GraphQLString },
+//     member_min_wallet_balance: { type: GraphQLInt },
+//     member_dmr_wallet: { type: GraphQLInt },
+//     member_min_dmr_wallet_balance: { type: GraphQLInt },
+//     member_service_profile: { type: GraphQLInt },
+//     member_daily_recharge_report: { type: GraphQLInt },
+//     member_active: { type: GraphQLInt },
+//     member_created_date: { type: GraphQLString },
+//     member_created_by: { type: GraphQLInt },
+//     member_update_date: { type: GraphQLString },
+//     member_update_by: { type: GraphQLInt },
+//     member_alert_wallet_balance: { type: GraphQLInt },
+//     member_alert_dmr_wallet_balance: { type: GraphQLInt },
+//     package_refund_callback_url: { type: GraphQLString },
+//     member_irctc_authcheck: { type: GraphQLString },
+//     member_irctc_ordercheck: { type: GraphQLString },
+//     member_irctc_cancelorder: { type: GraphQLString },
+//     is_lapu_acess: { type: GraphQLInt },
+//     provider_strategy: { type: GraphQLInt },
+//     is_special_recharge: { type: GraphQLInt },
+//     last_login: { type: GraphQLString },
+//     member_permission: { type: new GraphQLList(GraphQLString) },
+//     is_phone_verified: { type: GraphQLInt },
+//     commission_template_id: { type: GraphQLInt },
+//     member_direct: { type: GraphQLString },
+//     last_ip_address: { type: GraphQLString },
+//   }),
+// });
 
 const PartnerListType = new GraphQLObjectType({
   name: "PartnerList",
   fields: () => ({
-    partner: { type: new GraphQLList(PartnerType) },
+    // partner: { type: new GraphQLList(PartnerType) },
+    partners: { type: new GraphQLList(PartnerType) },
   }),
 });
 
@@ -156,27 +163,57 @@ const RootQuery = new GraphQLObjectType({
       resolve: () => findData(),
     },
     PartnerList: {
-      type: PartnerListType,
+      type: new GraphQLList(PartnerType),
       args: { token: { type: GraphQLString } },
       async resolve(parent, args) {
         const data = await network.getNetwork("/member/partners", args.token);
-        console.log("asd", data.partners[0]);
+
         return data.partners;
       },
     },
-    PlanAmount: {
-      type: SpecialPlanType,
-      args: {
-        token: { type: GraphQLString },
-        operator_id: { type: GraphQLString },
-        circle_id: { type: GraphQLString },
-        amount: { type: GraphQLString },
-      },
+    Permissions: {
+      type: new GraphQLList(PermissionType),
+      args: { token: { type: GraphQLString } },
       async resolve(parent, args) {
-        console.log(args);
-        const data = await getPlan(args);
+        const data = await network.getNetwork(
+          "/member/permissions",
+          args.token
+        );
 
-        return data;
+        return data.permissionList;
+      },
+    },
+    StaffList: {
+      type: new GraphQLList(PartnerType),
+      args: { token: { type: GraphQLString } },
+      async resolve(parent, args) {
+        const data = await network.getNetwork("/member/staff", args.token);
+
+        return data.staffList;
+      },
+    },
+    TemplateList: {
+      type: new GraphQLList(TemplateType),
+      args: { token: { type: GraphQLString } },
+      async resolve(parent, args) {
+        const data = await network.getNetwork(
+          "/commission/templates/all",
+          args.token
+        );
+
+        return data.templates;
+      },
+    },
+    SingleTemplateList: {
+      type: new GraphQLList(TemplateType),
+      args: { token: { type: GraphQLString } },
+      async resolve(parent, args) {
+        const data = await network.getNetwork(
+          "/commission/template/1",
+          args.token
+        );
+
+        return data.template;
       },
     },
 
